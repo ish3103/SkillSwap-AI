@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillSwap</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</head>
+<body>
+
+    <nav>
+        <h1 class="logo">SkillSwap</h1>
+
+        <div>
+            <a href="login.html">Login</a>
+            <a href="signup.html">Signup</a>
+        </div>
+    </nav>
+    <div id ="particles-js"></div>
+    <section class="hero">
+
+
+        <div class="hero-content">
+
+            <h2>
+                Learn Skills <span>From Real People</span>
+            </h2>
+
+            <p>
+                Exchange knowledge, grow together,
+                and connect with talented students.
+            </p>
+
+            <div class="hero-buttons">
+
+                <button onclick="explore()">
+                    Get Started
+                </button>
+
+                <a href="browse.html">
+                    <button class="secondary-btn">
+                        Explore Skills
+                    </button>
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="floating-card card1">
+            💻 Web Development
+        </div>
+
+        <div class="floating-card card2">
+            📈 Trading
+        </div>
+
+        <div class="floating-card card3">
+            🎨 Photoshop
+        </div>
+
+        <div class="floating-card card4">
+            ☕ Java
+        </div>
+
+    </section>
+
+    <!-- AI ASSISTANT -->
+
+<div class="chatbot-container">
+
+    <div class="chatbot-toggle" onclick="toggleChatbot()">
+        🤖
+    </div>
+
+    <div class="chatbot-box" id="chatbotBox">
+
+        <div class="chatbot-header">
+            Shaktiman
+        </div>
+
+        <div class="chatbot-messages" id="chatMessages">
+
+            <div class="bot-message">
+                Hello 👋 Ask me about skills,
+                careers, or placements!
+            </div>
+
+        </div>
+
+        <div class="chatbot-input-area">
+
+            <input
+                type="text"
+                id="userInput"
+                placeholder="Ask something..."
+            >
+
+            <button onclick="sendMessage()">
+                Send
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
