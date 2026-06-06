@@ -52,7 +52,7 @@ SkillSwap-AI/
 ### Clone Repository
 
 ```bash
-git clone YOUR_GITHUB_LINK
+git clone https://github.com/ish3103/SkillSwap-AI
 ```
 
 ### Backend Setup
