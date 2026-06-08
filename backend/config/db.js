@@ -1,22 +1,24 @@
-const mongoose = require("mongoose");
+const mysql = require("mysql2");
 
-const connectDB = async () => {
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "root123",
+    database: "skillswap"
+});
 
-    try{
+db.connect((err) => {
 
-        await mongoose.connect(
-            "mongodb+srv://ish101204_db_user:admin1234@skillswapdb.tolioiy.mongodb.net/?appName=SkillSwapDB"
-        );
+    if(err){
 
-        console.log("MongoDB Connected");
+        console.log("MySQL Connection Failed");
+        console.log(err);
+        return;
 
     }
-    catch(error){
 
-        console.log(error);
+    console.log("MySQL Connected");
 
-    }
+});
 
-};
-
-module.exports = connectDB;
+module.exports = db;

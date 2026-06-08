@@ -1,13 +1,13 @@
 ﻿# SkillSwap
 
-SkillSwap is a student skill exchange platform with a frontend and an Express/MongoDB backend. It supports user signup/login, browsing skill exchange offers, managing personal skill lists, viewing exchange requests, and a chatbot powered by the OpenAI API.
+SkillSwap is a student skill exchange platform with a frontend and an Express/MySQL backend. It supports user signup/login, browsing skill exchange offers, managing personal skill lists, viewing exchange requests, and a chatbot powered by the OpenAI API.
 
 ## Project Structure
 
 - `backend/`
   - `server.js` - Express server setup and route registration.
-  - `config/db.js` - MongoDB connection module.
-  - `models/User.js` - Mongoose user schema.
+  - `config/db.js` - MySQL connection module.
+  - `models/User.js` - User model and database schema.
   - `routes/userRoutes.js` - Signup and login endpoints.
   - `routes/aiRoutes.js` - Chatbot endpoint using OpenAI with offline fallback.
   - `package.json` - Backend dependencies.
@@ -25,7 +25,7 @@ SkillSwap is a student skill exchange platform with a frontend and an Express/Mo
 ## Features
 
 - User registration and login with password hashing.
-- MongoDB-backed user storage.
+- MySQL-backed user storage.
 - Skill offer/want list management on the dashboard.
 - Skill browsing and search functionality.
 - Basic request handling for skill exchanges.
@@ -34,7 +34,7 @@ SkillSwap is a student skill exchange platform with a frontend and an Express/Mo
 ## Prerequisites
 
 - Node.js 18+ installed.
-- MongoDB Atlas or MongoDB connection available.
+- MySQL Server installed and running.
 - OpenAI API key for chatbot support.
 
 ## Setup
@@ -81,11 +81,11 @@ npx nodemon server.js
 
 - The dashboard stores user email in `localStorage` for a simple session state.
 - The skill browse and requests pages currently use static sample data in `frontend/script.js`.
-- `backend/config/db.js` contains a MongoDB Atlas connection string; update it if you need a different database.
+- `backend/config/db.js` contains the MySQL database connection configuration; update it with your database credentials.
 
 ## Improvements
 
 - Add a real session/auth token system.
-- Persist dashboard skills and requests in MongoDB.
+- Persist dashboard skills and requests in MySQL.
 - Add form validation and secure password handling on the frontend.
 - Serve frontend files from Express so the app can run from a single origin.
