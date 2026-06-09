@@ -1,91 +1,110 @@
 ﻿# SkillSwap
 
-SkillSwap is a student skill exchange platform with a frontend and an Express/MySQL backend. It supports user signup/login, browsing skill exchange offers, managing personal skill lists, viewing exchange requests, and a chatbot powered by the OpenAI API.
+SkillSwap is a student skill-exchange platform with a static frontend and an Express + MySQL backend. It supports user signup/login, browsing skill offers, saving skills, handling exchange requests, and chatting with a SkillBot assistant.
+
+## Tech Stack
+
+- Frontend: HTML, CSS, JavaScript
+- Backend: Node.js, Express, CORS
+- Database: MySQL via mysql2
+- AI: OpenAI SDK with an offline fallback response
 
 ## Project Structure
 
 - `backend/`
-  - `server.js` - Express server setup and route registration.
-  - `config/db.js` - MySQL connection module.
-  - `models/User.js` - User model and database schema.
+  - `server.js` - Starts the Express server and registers all API routes.
+  - `config/db.js` - MySQL connection settings.
   - `routes/userRoutes.js` - Signup and login endpoints.
-  - `routes/aiRoutes.js` - Chatbot endpoint using OpenAI with offline fallback.
-  - `package.json` - Backend dependencies.
+  - `routes/skillRoutes.js` - Fetch and create skill records.
+  - `routes/requestRoutes.js` - Fetch and send exchange requests.
+  - `routes/aiRoutes.js` - AI chat endpoint with fallback responses.
+  - `package.json` - Backend dependencies and scripts.
 
 - `frontend/`
-  - `index.html` - Landing page with signup/login links, browse link, and chatbot.
-  - `signup.html` - User registration page.
-  - `login.html` - User login page.
-  - `dashboard.html` - Personal dashboard for offered/wanted skills.
-  - `browse.html` - Browse and search skill cards.
-  - `requests.html` - View and accept/reject skill exchange requests.
-  - `script.js` - Frontend logic for authentication, skill lists, requests, and chatbot.
-  - `style.css` - Shared UI styling.
+  - `index.html` - Landing page.
+  - `signup.html` - Registration page.
+  - `login.html` - Login page.
+  - `dashboard.html` - Personal skill dashboard.
+  - `browse.html` - Browse available skills.
+  - `requests.html` - View and manage requests.
+  - `script.js` - Frontend logic for auth, skills, requests, and chatbot.
+  - `style.css` - Shared styling for the UI.
 
 ## Features
 
-- User registration and login with password hashing.
-- MySQL-backed user storage.
-- Skill offer/want list management on the dashboard.
-- Skill browsing and search functionality.
-- Basic request handling for skill exchanges.
-- AI assistant chatbot via OpenAI `gpt-4.1-mini` with offline response fallback.
+- User registration and secure password hashing with `bcryptjs`.
+- MySQL-backed user, skill, and request storage.
+- Skill browsing and exchange request handling.
+- AI assistant chat powered by OpenAI `gpt-4.1-mini`, with offline fallback when the API key is unavailable.
 
 ## Prerequisites
 
-- Node.js 18+ installed.
-- MySQL Server installed and running.
-- OpenAI API key for chatbot support.
+- Node.js 18+
+- MySQL Server running locally
+- An OpenAI API key for the chatbot feature
 
 ## Setup
 
-1. Open a terminal and go to the backend folder:
+1. Create a MySQL database named `skillswap`.
 
-```powershell
-cd d:\SkillSwap\backend
-```
+2. Update the database credentials in `backend/config/db.js` if your local MySQL setup is different:
 
-2. Install backend dependencies:
+   - host
+   - user
+   - password
+   - database
 
-```powershell
-npm install
-```
+3. Open a terminal in the backend folder:
 
-3. Create a `.env` file in `backend/` with your OpenAI API key:
+   ```powershell
+   cd d:\SkillSwap\backend
+   ```
 
-```text
-OPENAI_API_KEY=your_openai_api_key_here
-```
+4. Install dependencies:
 
-4. Start the backend server:
+   ```powershell
+   npm install
+   ```
 
-```powershell
-node server.js
-```
+5. Create a `.env` file in `backend/` with your OpenAI key:
 
-   Or, if you have nodemon installed globally:
+   ```text
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
 
-```powershell
-npx nodemon server.js
-```
+6. Start the backend server:
 
-5. Open the frontend pages by opening `frontend/index.html` in your browser.
+   ```powershell
+   node server.js
+   ```
+
+   You can also use:
+
+   ```powershell
+   npx nodemon server.js
+   ```
+
+7. Open the frontend pages in a browser. The static files in `frontend/` can be opened directly, or served with a simple live server.
 
 ## API Endpoints
 
 - `POST /api/users/signup` - Register a new user.
-- `POST /api/users/login` - Authenticate an existing user.
+- `POST /api/users/login` - Authenticate a user.
+- `GET /api/skills` - Fetch all skills.
+- `POST /api/skills` - Save a new skill entry.
+- `GET /api/requests` - Fetch all requests.
+- `POST /api/requests` - Create a new exchange request.
 - `POST /api/ai/chat` - Send a chat message to the AI assistant.
 
 ## Notes
 
-- The dashboard stores user email in `localStorage` for a simple session state.
-- The skill browse and requests pages currently use static sample data in `frontend/script.js`.
-- `backend/config/db.js` contains the MySQL database connection configuration; update it with your database credentials.
+- The frontend currently calls the backend at `http://localhost:5000`.
+- The simple login session uses `localStorage` to remember the logged-in user email.
+- If the OpenAI API key is missing or the API call fails, the chatbot returns a built-in offline response.
 
-## Improvements
+## Future Improvements
 
-- Add a real session/auth token system.
-- Persist dashboard skills and requests in MySQL.
-- Add form validation and secure password handling on the frontend.
-- Serve frontend files from Express so the app can run from a single origin.
+- Add real authentication tokens instead of local session storage.
+- Move more frontend data to MySQL-backed APIs.
+- Improve form validation and UI feedback.
+- Serve the frontend through Express for one unified app origin.

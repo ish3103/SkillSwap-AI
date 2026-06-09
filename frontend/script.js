@@ -163,30 +163,38 @@ function logout(){
 
     window.location.href = "index.html";
 }
-const users = [
+let users = [];
 
-    {
-        name: "Rahul",
-        skill: "Java"
-    },
+async function loadSkills(){
 
-    {
-        name: "Priya",
-        skill: "Photoshop"
-    },
+    try{
 
-    {
-        name: "Aman",
-        skill: "Web Development"
-    },
+        const response = await fetch(
+            "http://localhost:5000/api/skills"
+        );
 
-    {
-        name: "Sneha",
-        skill: "Trading"
+        const data = await response.json();
+
+        users = data.map(skill => ({
+
+            name: skill.name,
+
+            skill: skill.offering_skill,
+
+            wanted: skill.wanted_skill
+
+        }));
+
+        displaySkills(users);
+
+    }
+    catch(error){
+
+        console.log(error);
+
     }
 
-];
-
+}
 function displaySkills(data){
 
     let cards = document.getElementById("skillCards");
@@ -203,7 +211,8 @@ function displaySkills(data){
 
         div.innerHTML = `
             <h3>${user.name}</h3>
-            <p><strong>Skill:</strong> ${user.skill}</p>
+            <p><strong>Offers:</strong> ${user.skill}</p>
+            <p><strong>Wants:</strong> ${user.wanted}</p>
             <button onclick="requestSkill('${user.name}')">
                 Request Exchange
             </button>
@@ -214,7 +223,7 @@ function displaySkills(data){
 }
 
 if(window.location.pathname.includes("browse.html")){
-    displaySkills(users);
+    loadSkills();
 }
 
 function searchSkills(){
@@ -231,12 +240,45 @@ function searchSkills(){
     displaySkills(filtered);
 }
 
-function requestSkill(name){
+async function requestSkill(receiverName){
 
-    alert(
-        "Exchange Request Sent to " + name
-    );
+    try{
+
+        const response = await fetch(
+            "http://localhost:5000/api/requests",
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+
+                    sender_name: "Current User",
+
+                    receiver_name: receiverName
+
+                })
+
+            }
+        );
+
+        const data = await response.json();
+
+        alert(data.message);
+
+    }
+    catch(error){
+
+        console.log(error);
+
+        alert("Failed to send request");
+
+    }
+
 }
+
 const requests = [
 
     {
@@ -476,3 +518,118 @@ particlesJS("particles-js", {
 
     retina_detect: true
 });
+async function loadRequests(){
+
+    try{
+
+        const response = await fetch(
+            "http://localhost:5000/api/requests"
+        );
+
+        const requests = await response.json();
+
+        const requestList =
+            document.getElementById("requestList");
+
+        if(!requestList) return;
+
+        requestList.innerHTML = "";
+
+        requests.forEach(request => {
+
+            const div =
+                document.createElement("div");
+
+            div.classList.add("card");
+
+            div.innerHTML = `
+                <h3>${request.sender_name}</h3>
+
+                <p>
+                    <strong>Receiver:</strong>
+                    ${request.receiver_name}
+                </p>
+
+                <p>
+                    <strong>Status:</strong>
+                    ${request.status}
+                </p>
+            `;
+
+            requestList.appendChild(div);
+
+        });
+
+    }
+    catch(error){
+
+        console.log(error);
+
+    }
+
+}
+
+if(
+    window.location.pathname.includes(
+        "requests.html"
+    )
+){
+    loadRequests();
+}
+
+async function saveSkills(){
+
+    const offeringSkill =
+        document.getElementById("offerSkill").value;
+
+    const wantedSkill =
+        document.getElementById("wantSkill").value;
+
+    const userEmail =
+        localStorage.getItem("loggedInUser");
+
+    if(!offeringSkill || !wantedSkill){
+
+        alert("Please enter both skills");
+        return;
+
+    }
+
+    try{
+
+        const response = await fetch(
+            "http://localhost:5000/api/skills",
+            {
+                method: "POST",
+
+                headers:{
+                    "Content-Type":"application/json"
+                },
+
+                body: JSON.stringify({
+
+                    name: userEmail,
+
+                    offering_skill: offeringSkill,
+
+                    wanted_skill: wantedSkill
+
+                })
+
+            }
+        );
+
+        const data = await response.json();
+
+        alert(data.message);
+
+    }
+    catch(error){
+
+        console.log(error);
+
+        alert("Failed to save skills");
+
+    }
+
+}
